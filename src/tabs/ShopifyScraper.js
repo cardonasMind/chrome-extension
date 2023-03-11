@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const ShopifyScraper = () => {
-  const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState(["Glasess, Street"]);
   const [selectedCollection, setSelectedCollection] = useState("All");
   const [includeImages, setIncludeImages] = useState(false);
   const [numProducts, setNumProducts] = useState(0);
@@ -22,7 +22,7 @@ const ShopifyScraper = () => {
 
   return (
     <div className="tab-content">
-      <h2>{window.location.hostname}</h2>
+      <h2>{window.location.href}</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="collection">Collection:</label>
         <select
