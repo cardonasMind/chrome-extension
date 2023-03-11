@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import "./styles.css";
+
 function App() {
   const [activeTab, setActiveTab] = useState("Shopify Scraper");
 
