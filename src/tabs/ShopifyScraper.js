@@ -6,6 +6,14 @@ const ShopifyScraper = () => {
   const [includeImages, setIncludeImages] = useState(false);
   const [numProducts, setNumProducts] = useState(0);
   const [numCollections, setNumCollections] = useState(0);
+  const [currentUrl, setCurrentUrl] = useState("");
+
+  useEffect(() => {
+    chrome.tabs !== undefined &&
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        setCurrentUrl(tabs[0].url);
+      });
+  });
 
   // Calculate number of collections
   useEffect(() => {
@@ -22,7 +30,7 @@ const ShopifyScraper = () => {
 
   return (
     <div className="tab-content">
-      <h2>{window.location.href}</h2>
+      <h2>{currentUrl}</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="collection">Collection:</label>
         <select
