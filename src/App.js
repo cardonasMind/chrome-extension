@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import "./styles.css";
 
+import ShopifyScraper from "./tabs/ShopifyScraper";
+
 function App() {
   const [activeTab, setActiveTab] = useState("Shopify Scraper");
 
@@ -37,9 +39,7 @@ function App() {
         </div>
       </div>
       <div className="tab-content">
-        {activeTab === "Shopify Scraper" && (
-          <p>Shopify Scraper content goes here</p>
-        )}
+        {activeTab === "Shopify Scraper" && <ShopifyScraper />}
         {activeTab === "Facebook Spy" && <p>Facebook Spy content goes here</p>}
         {activeTab === "Bookmarks" && <p>Bookmarks content goes here</p>}
       </div>
