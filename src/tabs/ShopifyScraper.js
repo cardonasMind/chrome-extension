@@ -7,7 +7,7 @@ const ShopifyScraper = () => {
   const [includeImages, setIncludeImages] = useState(false);
   const [numProducts, setNumProducts] = useState(0);
   const [numCollections, setNumCollections] = useState(0);
-  const [currentUrl, setCurrentUrl] = useState("https://sidemenclothing.com/");
+  const [currentUrl, setCurrentUrl] = useState("");
 
   useEffect(() => {
     chrome.tabs !== undefined &&
