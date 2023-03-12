@@ -17,48 +17,44 @@ const ShopifyScraper = () => {
 
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      const apiUrl =
-        "https://api.apify.com/v2/acts/pocesar~shopify-scraper/run-sync-get-dataset-items";
-      const token = "apify_api_SjYbX1EVfHt7YBRGojv10i4cFRUIOg0nnpVx";
+  const fetchItems = async () => {
+    const apiUrl =
+      "https://api.apify.com/v2/acts/pocesar~shopify-scraper/run-sync-get-dataset-items";
+    const token = "apify_api_SjYbX1EVfHt7YBRGojv10i4cFRUIOg0nnpVx";
 
-      const inputData = {
-        checkForBanner: true,
-        debugLog: false,
-        extendOutputFunction:
-          "async ({ data, item, product, images, fns, name, request, variants, context, customData, input, Apify }) => {\n  return item;\n}",
-        extendScraperFunction:
-          "async ({ fns, customData, Apify, label }) => {\n \n}",
-        fetchHtml: false,
-        maxConcurrency: 10,
-        maxRequestRetries: 3,
-        maxRequestsPerCrawl: 10, // Maximum number of items to scrape. Set it to 0 to scrape everything.
-        proxyConfig: {
-          useApifyProxy: true,
+    const inputData = {
+      checkForBanner: true,
+      debugLog: false,
+      extendOutputFunction:
+        "async ({ data, item, product, images, fns, name, request, variants, context, customData, input, Apify }) => {\n  return item;\n}",
+      extendScraperFunction:
+        "async ({ fns, customData, Apify, label }) => {\n \n}",
+      fetchHtml: false,
+      maxConcurrency: 10,
+      maxRequestRetries: 3,
+      maxRequestsPerCrawl: 4, // Maximum number of items to scrape. Set it to 0 to scrape everything.
+      proxyConfig: {
+        useApifyProxy: true,
+      },
+      startUrls: [
+        {
+          url: currentUrl,
         },
-        startUrls: [
-          {
-            url: "https://sidemenclothing.com/",
-          },
-        ],
-      };
-
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputData),
-      };
-
-      const response = await fetch(`${apiUrl}?token=${token}`, options);
-      const data = await response.json();
-      setData(data);
+      ],
     };
 
-    fetchItems();
-  }, []);
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData),
+    };
+
+    const response = await fetch(`${apiUrl}?token=${token}`, options);
+    const data = await response.json();
+    setData(data);
+  };
 
   // Calculate number of collections
   useEffect(() => {
@@ -71,6 +67,7 @@ const ShopifyScraper = () => {
     event.preventDefault();
     const includeImagesText = includeImages ? " (including images)" : "";
     alert(`Exporting ${selectedCollection} collection${includeImagesText}...`);
+    fetchItems();
   };
 
   const tableData = data.length > 0 && data.slice(0, 5);
