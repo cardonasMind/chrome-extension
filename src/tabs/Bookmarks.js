@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
-  const [bookmarksLoaded, setBookmarksLoaded] = useState(false);
 
   useEffect(() => {
     chrome.storage !== undefined &&
-      chrome.storage.local.get("bookmarks", (result) => {
-        setBookmarks(result);
-        setBookmarksLoaded(true);
-      });
+      chrome.storage.local.get("bookmarks", (result) => setBookmarks(result));
   }, []);
 
-  const handleDeleteBookmarkClick = (index) => {
+  const handleDeleteBookmark = (index) => {
     bookmarks.splice(index, 1);
     chrome.storage !== undefined &&
       chrome.storage.local.set({ bookmarks }, function () {
@@ -20,25 +16,30 @@ const Bookmarks = () => {
       });
   };
 
+  const BookmarkList = useMemo(() => {
+    return (
+      <ul>
+        {bookmarks.length > 0 &&
+          bookmarks.map((bookmark, index) => (
+            <li key={index}>
+              <a href={bookmark}>{bookmark}</a>
+              <button onClick={() => handleDeleteBookmark(index)}>
+                Delete
+              </button>
+            </li>
+          ))}
+      </ul>
+    );
+  }, [bookmarks]);
+
   return (
     <>
       <h1>b</h1>
       {console.log("bookmarks isss", bookmarks)}
 
-      {bookmarksLoaded && bookmarks.length > 0 ? (
-        <ul>
-          {bookmarks.map((bookmark, index) => (
-            <li key={index}>
-              <a href={bookmark}>{bookmark}</a>
-              <button onClick={() => handleDeleteBookmarkClick(index)}>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No bookmarks saved yet.</p>
-      )}
+      <BookmarkList />
+
+      {bookmarks.length > 0 ? BookmarkList : <p>No bookmarks saved yet.</p>}
     </>
   );
 };
