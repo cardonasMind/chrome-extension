@@ -39,7 +39,7 @@ const Bookmarks = () => {
 
       <BookmarkList />
 
-      {bookmarks.length > 0 ? BookmarkList : <p>No bookmarks saved yet.</p>}
+      {bookmarks.length > 0 ? <BookmarkList /> : <p>No bookmarks saved yet.</p>}
     </>
   );
 };
