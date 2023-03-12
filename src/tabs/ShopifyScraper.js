@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 const ShopifyScraper = () => {
-  const [collections, setCollections] = useState(["Glasess, Street"]);
+  const [data, setData] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState("All");
   const [includeImages, setIncludeImages] = useState(false);
   const [numProducts, setNumProducts] = useState(0);
   const [numCollections, setNumCollections] = useState(0);
-  const [currentUrl, setCurrentUrl] = useState("");
+  const [currentUrl, setCurrentUrl] = useState("https://sidemenclothing.com/");
 
   useEffect(() => {
     chrome.tabs !== undefined &&
@@ -15,7 +16,9 @@ const ShopifyScraper = () => {
       });
   });
 
-  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetchItems();
+  }, [currentUrl]);
 
   const fetchItems = async () => {
     const apiUrl =
@@ -54,58 +57,84 @@ const ShopifyScraper = () => {
     const response = await fetch(`${apiUrl}?token=${token}`, options);
     const data = await response.json();
     setData(data);
+    setNumProducts(data.length);
   };
 
   // Calculate number of collections
-  useEffect(() => {
+  /*useEffect(() => {
     const numCols = selectedCollection === "All" ? collections.length - 1 : 1;
     setNumCollections(numCols);
-  }, [selectedCollection, collections]);
+  }, [selectedCollection, collections]);*/
+
+  const convertToCSV = () => {
+    const headers = Object.keys(data[0]).join(",");
+    const rows = data.map((obj) =>
+      Object.values(obj)
+        .map((val) => (typeof val === "string" ? `"${val}"` : val))
+        .join(",")
+    );
+    return [headers, ...rows].join("\n");
+  };
+
+  const downloadCSV = () => {
+    const csvData = convertToCSV();
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "data.csv");
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-    const includeImagesText = includeImages ? " (including images)" : "";
-    alert(`Exporting ${selectedCollection} collection${includeImagesText}...`);
-    fetchItems();
-  };
 
-  const tableData = data.length > 0 && data.slice(0, 5);
+    downloadCSV();
+  };
 
   return (
     <>
       <h2 id="current-url">{currentUrl}</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="collection">Collection:</label>
-        <select
-          id="collection"
-          value={selectedCollection}
-          onChange={(e) => setSelectedCollection(e.target.value)}
-        >
-          {collections.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.title}
-            </option>
-          ))}
-        </select>
-        <div>
-          <input
-            type="checkbox"
-            id="includeImages"
-            checked={includeImages}
-            onChange={(e) => setIncludeImages(e.target.checked)}
-          />
-          <label htmlFor="includeImages">Include images</label>
-        </div>
-        <button type="submit" id="export-button">
-          Export
-        </button>
-      </form>
-      <p>
-        {numProducts} products, {numCollections} collections
-      </p>
 
-      {tableData.length > 0 && tableData.map((item) => console.log(item))}
+      {data.length > 0 ? (
+        <>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="collection">Collection:</label>
+            <select
+              id="collection"
+              value={selectedCollection}
+              onChange={(e) => setSelectedCollection(e.target.value)}
+            >
+              {collections.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.title}
+                </option>
+              ))}
+            </select>
+            <div>
+              <input
+                type="checkbox"
+                id="includeImages"
+                checked={includeImages}
+                onChange={(e) => setIncludeImages(e.target.checked)}
+              />
+              <label htmlFor="includeImages">Include images</label>
+            </div>
+            <button type="submit" id="export-button">
+              Export
+            </button>
+          </form>
+          <p>
+            {numProducts} products, {numCollections} collections
+          </p>
+        </>
+      ) : (
+        <p>Products are being scrape</p>
+      )}
     </>
   );
 };
