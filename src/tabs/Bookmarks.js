@@ -19,15 +19,12 @@ const Bookmarks = () => {
   const BookmarkList = useMemo(() => {
     return (
       <ul>
-        {bookmarks.length > 0 &&
-          bookmarks.map((bookmark, index) => (
-            <li key={index}>
-              <a href={bookmark}>{bookmark}</a>
-              <button onClick={() => handleDeleteBookmark(index)}>
-                Delete
-              </button>
-            </li>
-          ))}
+        {bookmarks.map((bookmark, index) => (
+          <li key={index}>
+            <a href={bookmark}>{bookmark}</a>
+            <button onClick={() => handleDeleteBookmark(index)}>Delete</button>
+          </li>
+        ))}
       </ul>
     );
   }, [bookmarks]);
@@ -36,7 +33,7 @@ const Bookmarks = () => {
     <>
       <h1>b</h1>
       {console.log("bookmarks isss", bookmarks)}
-      BookmarkList
+
       {bookmarks.length > 0 ? BookmarkList : <p>No bookmarks saved yet.</p>}
     </>
   );
