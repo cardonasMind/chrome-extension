@@ -5,11 +5,13 @@ const Bookmarks = () => {
 
   useEffect(() => {
     chrome.storage !== undefined &&
-      chrome.storage.local.get("bookmarks", (result) => setBookmarks(result));
+      chrome.storage.local.get("bookmarks", (result) => {
+        console.log(result);
+        setBookmarks(result);
+      });
   });
 
   const handleDeleteBookmarkClick = (index) => {
-    const bookmarks = result.bookmarks || [];
     bookmarks.splice(index, 1);
     chrome.storage !== undefined &&
       chrome.storage.local.set({ bookmarks }, function () {
