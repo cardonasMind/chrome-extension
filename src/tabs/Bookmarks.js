@@ -19,16 +19,17 @@ const Bookmarks = () => {
 
   return (
     <>
-      {bookmarks.map((bookmark, index) => (
-        <tr key={index}>
-          <td>{bookmark}</td>
-          <td>
-            <button onClick={() => handleDeleteBookmarkClick(index)}>
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
+      {bookmarks.length > 0 &&
+        bookmarks.map((bookmark, index) => (
+          <tr key={index}>
+            <td>{bookmark}</td>
+            <td>
+              <button onClick={() => handleDeleteBookmarkClick(index)}>
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
     </>
   );
 };
