@@ -36,10 +36,8 @@ const Bookmarks = () => {
     <>
       <h1>b</h1>
       {console.log("bookmarks isss", bookmarks)}
-
-      <BookmarkList />
-
-      {bookmarks.length > 0 ? <BookmarkList /> : <p>No bookmarks saved yet.</p>}
+      BookmarkList
+      {bookmarks.length > 0 ? BookmarkList : <p>No bookmarks saved yet.</p>}
     </>
   );
 };
