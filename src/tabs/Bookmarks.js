@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
+  const [bookmarksLoaded, setBookmarksLoaded] = useState(false);
 
   useEffect(() => {
     chrome.storage !== undefined &&
       chrome.storage.local.get("bookmarks", (result) => {
-        console.log(result);
         setBookmarks(result);
+        setBookmarksLoaded(true);
       });
   }, []);
 
@@ -21,20 +22,23 @@ const Bookmarks = () => {
 
   return (
     <>
-      <h1>Bookmarks</h1>
+      <h1>b</h1>
       {console.log("bookmarks isss", bookmarks)}
 
-      {bookmarks.length > 0 &&
-        bookmarks.map((bookmark, index) => (
-          <tr key={index}>
-            <td>{bookmark}</td>
-            <td>
+      {bookmarksLoaded && bookmarks.length > 0 ? (
+        <ul>
+          {bookmarks.map((bookmark, index) => (
+            <li key={index}>
+              <a href={bookmark}>{bookmark}</a>
               <button onClick={() => handleDeleteBookmarkClick(index)}>
                 Delete
               </button>
-            </td>
-          </tr>
-        ))}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No bookmarks saved yet.</p>
+      )}
     </>
   );
 };

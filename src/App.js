@@ -17,7 +17,7 @@ function App() {
   });
 
   const handleBookmarkClick = () => {
-    chrome.local !== undefined &&
+    chrome.storage !== undefined &&
       chrome.storage.local.get("bookmarks", function (result) {
         const bookmarks = result.bookmarks || [];
         bookmarks.push(currentUrl);
