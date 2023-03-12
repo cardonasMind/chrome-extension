@@ -74,7 +74,7 @@ const ShopifyScraper = () => {
 
   return (
     <>
-      <h2>{currentUrl}</h2>
+      <h2 id="current-url">{currentUrl}</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="collection">Collection:</label>
         <select

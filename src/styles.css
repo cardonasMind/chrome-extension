@@ -9,7 +9,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem;
   background-color: #f1f1f1;
   border-bottom: 1px solid #ddd;
 }
@@ -20,7 +20,7 @@ body {
   border-radius: 2rem;
   border: none;
   color: #fff;
-  padding: 10px 20px;
+  padding: 0.4rem 0.6rem;
   transition: background-color 0.2s ease-in-out;
   cursor: pointer;
 }
@@ -32,12 +32,11 @@ body {
 #tabs {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
 }
 
 .tab {
   width: 33%;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem;
   background-color: #f1f1f1;
   border: 1px solid #ddd;
   cursor: pointer;
@@ -54,6 +53,10 @@ body {
 
 .tab-content {
   padding: 0 1rem;
+}
+
+#current-url {
+  color: #c1ff72;
 }
 
 #export-button {

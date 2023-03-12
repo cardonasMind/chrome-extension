@@ -1,11 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./styles.css";
 
 import ShopifyScraper from "./tabs/ShopifyScraper";
+import Bookmarks from "./tabs/Bookmarks";
 
 function App() {
+  const [currentUrl, setCurrentUrl] = useState("");
   const [activeTab, setActiveTab] = useState("Shopify Scraper");
+
+  useEffect(() => {
+    chrome.tabs !== undefined &&
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        setCurrentUrl(tabs[0].url);
+      });
+  });
+
+  const handleBookmarkClick = () => {
+    chrome.storage.local.get("bookmarks", function (result) {
+      const bookmarks = result.bookmarks || [];
+      bookmarks.push(currentUrl);
+      chrome.storage.local.set({ bookmarks }, function () {
+        console.log("Bookmark saved!");
+      });
+    });
+  };
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -14,7 +33,9 @@ function App() {
   return (
     <div>
       <div id="header">
-        <button className="primary-button">Bookmark</button>
+        <button className="primary-button" onClick={handleBookmarkClick}>
+          Bookmark
+        </button>
         <h2>My Extension</h2>
         <button className="primary-button">See FB ads</button>
       </div>
@@ -41,7 +62,7 @@ function App() {
       <div className="tab-content">
         {activeTab === "Shopify Scraper" && <ShopifyScraper />}
         {activeTab === "Facebook Spy" && <p>Facebook Spy content goes here</p>}
-        {activeTab === "Bookmarks" && <p>Bookmarks content goes here</p>}
+        {activeTab === "Bookmarks" && <Bookmarks />}
       </div>
     </div>
   );
