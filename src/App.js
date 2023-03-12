@@ -14,9 +14,9 @@ function App() {
   return (
     <div>
       <div id="header">
-        <button>Bookmark</button>
+        <button className="primary-button">Bookmark</button>
         <h2>My Extension</h2>
-        <button>See FB ads</button>
+        <button className="primary-button">See FB ads</button>
       </div>
       <div id="tabs">
         <div

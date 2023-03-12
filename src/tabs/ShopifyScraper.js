@@ -73,7 +73,7 @@ const ShopifyScraper = () => {
   const tableData = data.length > 0 && data.slice(0, 5);
 
   return (
-    <div className="tab-content">
+    <>
       <h2>{currentUrl}</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="collection">Collection:</label>
@@ -97,14 +97,16 @@ const ShopifyScraper = () => {
           />
           <label htmlFor="includeImages">Include images</label>
         </div>
-        <button type="submit">Export</button>
+        <button type="submit" id="export-button">
+          Export
+        </button>
       </form>
       <p>
         {numProducts} products, {numCollections} collections
       </p>
 
       {tableData.length > 0 && tableData.map((item) => console.log(item))}
-    </div>
+    </>
   );
 };
 
