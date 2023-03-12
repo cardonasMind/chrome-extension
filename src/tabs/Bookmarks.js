@@ -9,7 +9,7 @@ const Bookmarks = () => {
         console.log(result);
         setBookmarks(result);
       });
-  });
+  }, []);
 
   const handleDeleteBookmarkClick = (index) => {
     bookmarks.splice(index, 1);
@@ -21,6 +21,9 @@ const Bookmarks = () => {
 
   return (
     <>
+      <h1>Bookmarks</h1>
+      {console.log("bookmarks isss", bookmarks)}
+
       {bookmarks.length > 0 &&
         bookmarks.map((bookmark, index) => (
           <tr key={index}>

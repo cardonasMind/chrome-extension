@@ -17,13 +17,14 @@ function App() {
   });
 
   const handleBookmarkClick = () => {
-    chrome.storage.local.get("bookmarks", function (result) {
-      const bookmarks = result.bookmarks || [];
-      bookmarks.push(currentUrl);
-      chrome.storage.local.set({ bookmarks }, function () {
-        console.log("Bookmark saved!");
+    chrome.local !== undefined &&
+      chrome.storage.local.get("bookmarks", function (result) {
+        const bookmarks = result.bookmarks || [];
+        bookmarks.push(currentUrl);
+        chrome.storage.local.set({ bookmarks }, function () {
+          console.log("Bookmark saved!");
+        });
       });
-    });
   };
 
   const handleTabClick = (tabName) => {
